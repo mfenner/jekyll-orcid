@@ -11,16 +11,16 @@ module Jekyll
       @name = name
 
       if site.config['author']['orcid']
-        url = "http://feed.labs.orcid-eu.org/#{site.config['author']['orcid']}.bib"
+        url = "http://feed.labs.orcid-eu.org/#{name}"
         response = Faraday.get url
-        bib = response.status == 200 ? response.body : ""
+        text = response.status == 200 ? response.body : ""
 
         content = <<-eos
 ---
 url: #{url}
 ---
-#{bib}
-        eos
+#{text}
+      eos
 
         File.open(self.destination(site.source), File::WRONLY|File::CREAT) { |file| file.write(content) }
       end
@@ -36,9 +36,12 @@ url: #{url}
     def generate(site)
       if site.config['author']['orcid']
         dir = site.config['scholar'] ? site.config['scholar']['source'] : "./bibliography"
-        name = site.config['scholar'] && site.config['scholar']['my_bibliography'] ? site.config['scholar']['my_bibliography'] : "me.bib"
-        bib = BibliographyFile.new(site, site.source, dir, name)
-        site.static_files << bib if dir.match /^(.*?\/)?[^_]\w*$/
+        bib = BibliographyFile.new(site, site.source, dir, "#{site.config['author']['orcid']}.bib")
+        json = BibliographyFile.new(site, site.source, dir, "#{site.config['author']['orcid']}.json")
+        if dir.match /^(.*?\/)?[^_]\w*$/
+          site.static_files << bib
+          site.static_files << json
+        end
       end
     end
   end
