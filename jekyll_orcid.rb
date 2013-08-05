@@ -3,6 +3,8 @@ require 'faraday_middleware'
 
 module Jekyll
 
+  FORMATS = ["bib","json","yml"]
+
   class BibliographyFile < StaticFile
     def initialize(site, base, dir, name)
       @site = site
@@ -36,11 +38,9 @@ url: #{url}
     def generate(site)
       if site.config['author']['orcid']
         dir = site.config['scholar'] ? site.config['scholar']['source'] : "./bibliography"
-        bib = BibliographyFile.new(site, site.source, dir, "#{site.config['author']['orcid']}.bib")
-        json = BibliographyFile.new(site, site.source, dir, "#{site.config['author']['orcid']}.json")
-        if dir.match /^(.*?\/)?[^_]\w*$/
-          site.static_files << bib
-          site.static_files << json
+        FORMATS.each do |format|
+          file = BibliographyFile.new(site, site.source, dir, "#{site.config['author']['orcid']}.#{format}")
+          site.static_files << file if dir.match /^(.*?\/)?[^_]\w*$/
         end
       end
     end

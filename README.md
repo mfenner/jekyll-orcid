@@ -1,23 +1,23 @@
 jekyll-orcid
 ============
 
-Jekyll plugin that writes a bibtex and Citeproc JSON bibliography file based on the publications in a user's Open Researcher & Contributor ID ([ORCID](http://orcid.org)) profile.
+Jekyll plugin that writes a bibtex, Citeproc JSON and Citeproc YML bibliography file based on the publications in a user's Open Researcher & Contributor ID ([ORCID](http://orcid.org)) profile.
 
 Installation
 ------------
 
-### Put file `jekyll-orcid.rb` into your Jekyll `_plugins` folder
-### Install the Faraday and Faraday middleware gems:
+#### Put file `jekyll-orcid.rb` into your Jekyll `_plugins` folder
+#### Install the Faraday and Faraday middleware gems:
 
     gem install faraday
     gem install faraday_middleware
 
-### Add your ORCID identifier to `_config.yml`:
+#### Add your ORCID identifier to `_config.yml`:
 
     author:
       orcid: 0000-0002-1825-0097
 
-### (Optionally) change the folder where the bibliographies are stored in `_config.yml`. The default is:
+#### (Optionally) change the folder where the bibliographies are stored in `_config.yml`. The default is:
 
     scholar:
       source:          ./bibliography
