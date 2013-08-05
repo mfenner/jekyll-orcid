@@ -17,12 +17,16 @@ module Jekyll
         response = Faraday.get url
         text = response.status == 200 ? response.body : ""
 
-        content = <<-eos
+        if File.extname(name) == ".bib"
+          content = <<-eos
 ---
 url: #{url}
 ---
 #{text}
-      eos
+          eos
+        else
+          content = text
+        end
 
         File.open(self.destination(site.source), File::WRONLY|File::CREAT) { |file| file.write(content) }
       end
